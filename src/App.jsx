@@ -1,16 +1,32 @@
 import { Taks } from "./components/Taks";
-import { useForm } from "react-hook-form"
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useEffect, useId, useState } from "react";
 
 export const App = () => {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm();
+  const id = useId();
+  const { register, handleSubmit } = useForm();
   const [formData, setFormData] = useState("");
-  const onSubmit = (data) => {setFormData(data)};
+  const [dataBase, setDataBase] = useState(() => {
+    const saveData = window.localStorage.getItem("taskData");
+    if (saveData) {
+      return JSON.parse(saveData);
+    } else {
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    window.localStorage.setItem("taskData", JSON.stringify(dataBase));
+  }, [dataBase]);
+
+  const onSubmit = (data) => {
+    setFormData(data);
+    addTask(data);
+  };
+
+  const addTask = (task) => {
+    setDataBase([...dataBase, task]);
+  };
 
   return (
     <div className="flex justify-center">
@@ -70,11 +86,16 @@ export const App = () => {
               Lista de tareas
             </h1>
             <div className="border-2 slate-50 rounded-xl p-5">
-              <Taks
-                Fecha={formData.Fecha}
-                Titulo={formData.Titulo}
-                Descripcion={formData.Descripcion}
-              />
+              {dataBase.map((task, index) => {
+                return (
+                  <Taks
+                    key={index}
+                    Fecha={task.Fecha}
+                    Titulo={task.Titulo}
+                    Descripcion={task.Descripcion}
+                  />
+                );
+              })}
             </div>
           </div>
         </form>
