@@ -22,10 +22,21 @@ export const App = () => {
   };
 
   const editTask = (task) => {
-    const taskEdited = dataBase.map(element => element.yourDetails.Id === task.yourDetails.Id ? task : element)
-    setDataBase(taskEdited)
-    setEditData(null)
+    const taskEdited = dataBase.map((element) =>
+      element.yourDetails.Id === task.yourDetails.Id ? task : element
+    );
+    setDataBase(taskEdited);
+    setEditData(null);
   };
+
+  const deleteTask = (id) => {
+    const isDelete = window.confirm(`¿Deseas eliminar la tarea?`);
+    if(isDelete) {
+      const taskDelete = dataBase.filter(element => element.yourDetails.Id !== id)
+      setDataBase(taskDelete);
+    }
+  };
+
   return (
     <div className="flex justify-center">
       <div className="w-9/12">
@@ -43,7 +54,14 @@ export const App = () => {
           <h1 className="text-4xl tracking-wide font-bold">Lista de tareas</h1>
           <div className="border-2 slate-50 rounded-xl p-5">
             {dataBase.map((task, index) => {
-              return <Taks key={index} task={task} setEditData={setEditData} />;
+              return (
+                <Taks
+                  key={index}
+                  task={task}
+                  setEditData={setEditData}
+                  deleteTask={deleteTask}
+                />
+              );
             })}
           </div>
         </div>

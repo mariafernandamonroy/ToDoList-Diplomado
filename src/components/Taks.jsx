@@ -1,7 +1,7 @@
 import deleteIcon from "../assets/delete.png";
 import editIcon from "../assets/edit.png";
 
-export const Taks = ({ task, setEditData }) => {
+export const Taks = ({ task, setEditData, deleteTask }) => {
   return (
     <div className="bg-slate-50 border-collapse rounded-md p-1 mb-2 flex">
       <p className="text-slate-400 flex-auto w-32 ">{task.yourDetails.Fecha}</p>
@@ -15,7 +15,12 @@ export const Taks = ({ task, setEditData }) => {
       >
         <img className="w-5 " src={editIcon} alt="edit" />
       </button>
-      <button className="bg-rose-400 rounded-md	mx-1 p-1 w-10 flex justify-center">
+      <button
+        className="bg-rose-400 rounded-md	mx-1 p-1 w-10 flex justify-center"
+        onClick={() => {
+          deleteTask(task.yourDetails.Id);
+        }}
+      >
         <img className="w-5" src={deleteIcon} alt="del" />
       </button>
     </div>
